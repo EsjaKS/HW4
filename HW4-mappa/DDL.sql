@@ -5,7 +5,7 @@ CREATE TABLE Languages(
 	name VARCHAR NOT NULL,
 	speakers VARCHAR NOT NULL,
     PRIMARY KEY (ID)
-)
+);
 
 CREATE TABLE Courses(
 	ID INT,
@@ -14,7 +14,7 @@ CREATE TABLE Courses(
 	level VARCHAR NOT NULL, 
     Languagesid REFERENCES Languages (ID)
 	PRIMARY KEY (ID)
-)
+);
 
 CREATE TABLE Subscriber(
 	ID INT,
@@ -23,84 +23,80 @@ CREATE TABLE Subscriber(
 	username VARCHAR NOT NULL,
     PRIMARY KEY(ID),
     UNIQUE(username, email)
-)
+);
 
 CREATE TABLE Teacher(
     subscriberid REFERENCES Subscriber (ID)
     phone VARCHAR NOT NULL
-    office_hours INT,  --varchar?
-    bank_account VARCHAR NOT NULL
-    UNIQUE(phone)
-    -- bank account er með 3 út frá sér, hvernig á að skrifa það?
-)
+    office_hours VARCHAR
+    bank VARCHAR NOT NULL
+    ledger VARCHAR NOT NULL
+    account_number VARCHAR NOT NULL
+    UNIQUE(phone)  
+);
 
--- tígull - aggregation?
--- lausn 1
-CREATE TABLE Registered_to(
-    CourseID INT REFERENCES Course(ID), -- á þetta a vera svona af því er í kassa útan um tígull refrence.
-    LearnerID INT REFERENCES Learner(ID), -- same
-    MilestoneID INT REFERENCES Milestone(ID),
-    PRIMARY KEY(CourseID, LearnerID) -- ekki milestones af því það er tígull þar á milli?
-) -- foreign eða uniqe
 
--- lausn 2
 CREATE TABLE Registered_to(
-    ID INT,
-    CourseID INT REFERENCES Course(ID),
-    LearnerID INT REFERENCES Learner(ID),
-    MilestoneID INT REFERENCES Milestone(ID),
-    PRIMARY KEY(ID) -- ekki milestones af því það er tígull þar á milli?
-    UNIQUE(CourseID, LearnerID)
-)
+    CourseID INT REFERENCES Course(ID), 
+    LearnerID INT REFERENCES Learner(ID), 
+    PRIMARY KEY(CourseID, LearnerID) 
+); 
 
 CREATE TABLE Completes(
-    Registered_toID INT REFERENCES Registered_to(ID),  -- á þetta að vera?
-    CompletesID INT NOT NULL REFERENCES Milestone(ID),
-    grade INT NULL,
-    PRIMARY KEY(Registered_toID)
-)
+    CourseID INT REFERENCES Course (ID)
+    LearnerID INT REFERENCES Learner (ID)
+    MilestoneID INT REFERENCES Milestone (ID)
+    grade VARCHAR NOT NULL
+    Foreign Key(courseid, learnerid) INT REFERENCES Registered_to(CourseID, learnerID),  
+    PRIMARY KEY(CourseID, LearnerID, milestoneID)
+);
 
--- union
+
+
+
 CREATE TABLE Learner(
     sponseeid references sponsee(id)
     last_login_date DATE NOT NULL,
-    XP INT -- varchar? 
-)
+    XP INT
+);
+
+-- Komið en má fara yfir fyrir ofan
 
 -- tígull, á að vera?
 CREATE TABLE Reviews(
-    ReviewsID INT NOT NULL REFERENCES Teacher(ID),
-    ReviewsID INT NOT NULL REFERENCES Learner(ID),
-    stars INT CHECK (stars >= 1 AND stars <= 5)
-    ) 
+    TeacherID INT REFERENCES Teacher(ID),
+    LearnerID INT REFERENCES Learner(ID),
+    stars INT CHECK (stars >= 1 AND stars <= 5), -- Stjörnur meiga bara vera á þessu bili.
+    CHECK(TeacherID<>LearnerID) -- tjékka hvort learner id sé sama og teacher id.
+); 
 
 CREATE TABLE Milestone(
     ID INT,
     credits INT,
     courseid REFERENCES course (ID)
     PRIMARY KEY(ID) 
-)
+);
 
 CREATE TABLE Assignment(
     milestoneid REFERENCES milestone(id)
     due_date DATE NOT NULL
-)
+);
 
 CREATE TABLE Exam(
     milestoneid REFERENCES milestone(id)
-    duration INT, -- Varchar??
+    duration VARCHAR
     date DATE NOT NULL
-)
+);
 
 -- weak entity
 CREATE TABLE Question(
 	ID INT REFERENCES Exams,
-    number INT, --Varchar
-    weight INT, --varchar
+    number VARCHAR 
+    weight VARCHAR
     text VARCHAR NOT NULL,
     PRIMARY KEY (number)
     FOREIGN KEY (examID) REFERENCES Exam (ID)
-)
+);
 
 -- union
 CREATE TABLE Squad(
@@ -111,14 +107,14 @@ CREATE TABLE Squad(
     name VARCHAR NOT NULL,
     address VARCHAR NOT NULL, 
     PRIMARY KEY (ID) 
-)
+);
 
 -- union
 CREATE TABLE Sponsee(
     ID INT, 
     grant_amount INT, -- Decimal
     PRIMARY KEY (ID)
-)
+);
 
 -- tígull á tígull að vera
 CREATE TABLE Nominates(
@@ -126,5 +122,5 @@ CREATE TABLE Nominates(
     SponseeID INT REFERENCES Party(ID),
     year INT,
     PRIMARY KEY (SponseeID, year)
-)
+);
 
