@@ -8,8 +8,8 @@ CREATE TABLE Languages(
 );
 
 CREATE TABLE Courses(
-	LanguagesID REFERENCES Languages(ID),
-    TeacherID REFERENCES Teacher(ID),
+	LanguagesID INT REFERENCES Languages(ID),
+    TeacherID INT REFERENCES Teacher(ID),
     ID INT,
 	name VARCHAR NOT NULL,
 	start_date DATE NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE Subscriber(
 );
 
 CREATE TABLE Teacher(
-    SubscriberID REFERENCES Subscriber(ID),
+    SubscriberID INT REFERENCES Subscriber(ID),
     phone VARCHAR NOT NULL,
     office_hours VARCHAR, -- Can be NULL because some teachers have maybe not worked any hours yet
     bank VARCHAR NOT NULL,
@@ -53,9 +53,9 @@ CREATE TABLE Completes(
 );
 
 CREATE TABLE Learner(
-    SubscriberID REFERENCES Subscriber(ID),
-    SponseeID REFERENCES sponsee(ID),
-    -- SquadID REFERENCES Squad(ID), one to many
+    SubscriberID INT REFERENCES Subscriber(ID),
+    SponseeID INT REFERENCES sponsee(ID),
+    -- SquadID INT REFERENCES Squad(ID), one to many
     -- PRIMARY KEY(SubscriberID)
     last_login_date DATE NOT NULL,
     XP INT
@@ -69,19 +69,19 @@ CREATE TABLE Reviews(
 ); 
 
 CREATE TABLE Milestone(
-    CourseID REFERENCES Course(ID),
+    CourseID INT REFERENCES Course(ID),
     ID INT,
     credits INT,
     PRIMARY KEY(ID) 
 );
 
 CREATE TABLE Assignment(
-    MilestoneID REFERENCES Milestone(ID),
+    MilestoneID INT REFERENCES Milestone(ID),
     due_date DATE NOT NULL
 );
 
 CREATE TABLE Exam(
-    MilestoneID REFERENCES Milestone(ID),
+    MilestoneID INT REFERENCES Milestone(ID),
     duration VARCHAR,
     date DATE NOT NULL
 );
@@ -89,28 +89,25 @@ CREATE TABLE Exam(
 -- Weak entity
 CREATE TABLE Question(
 	ID INT REFERENCES Exams,
-    number VARCHAR 
-    weight VARCHAR
+    number VARCHAR,
+    weight VARCHAR,
     text VARCHAR NOT NULL,
-    PRIMARY KEY (number)
-    FOREIGN KEY (ExamID) REFERENCES Exam(ID)
+    PRIMARY KEY(number),
+    FOREIGN KEY(ExamID) REFERENCES Exam(ID)
 );
 
--- Union
 CREATE TABLE Squad(
-    SponseeID REFERENCES Sponsee(ID),
+    SponseeID INT REFERENCES Sponsee(ID),
     ID INT,
-    -- refrence language?
-    -- Learner
+    -- LanguageID INT REFERENCES Language(ID),
     name VARCHAR NOT NULL,
     address VARCHAR NOT NULL, 
     PRIMARY KEY(ID) 
 );
 
--- Union
 CREATE TABLE Sponsee(
     ID INT, 
-    grant_amount INT, -- Decimal
+    grant_amount INT,
     PRIMARY KEY (ID)
 );
 
