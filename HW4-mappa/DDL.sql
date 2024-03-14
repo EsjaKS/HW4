@@ -8,12 +8,12 @@ CREATE TABLE Languages(
 );
 
 CREATE TABLE Courses(
-	ID INT,
+	LanguagesID REFERENCES Languages(ID),
+    TeacherID REFERENCES Teacher(ID),
+    ID INT,
 	name VARCHAR NOT NULL,
 	start_date DATE NOT NULL,
 	level VARCHAR NOT NULL, 
-    LanguagesID REFERENCES Languages(ID),
-    -- TeacherID REFERENCES Teacher(ID),
 	PRIMARY KEY (ID)
 );
 
@@ -33,6 +33,7 @@ CREATE TABLE Teacher(
     bank VARCHAR NOT NULL,
     ledger VARCHAR NOT NULL,
     account_number VARCHAR NOT NULL,
+    -- PRIMARY KEY(SubscriberID)
     UNIQUE(phone)  
 );
 
@@ -52,25 +53,25 @@ CREATE TABLE Completes(
 );
 
 CREATE TABLE Learner(
+    SubscriberID REFERENCES Subscriber(ID),
     SponseeID REFERENCES sponsee(ID),
+    -- SquadID REFERENCES Squad(ID), one to many
+    -- PRIMARY KEY(SubscriberID)
     last_login_date DATE NOT NULL,
     XP INT
 );
 
--- Komið en má fara yfir fyrir ofan
-
--- tígull, á að vera?
 CREATE TABLE Reviews(
     TeacherID INT REFERENCES Teacher(ID),
     LearnerID INT REFERENCES Learner(ID),
     stars INT CHECK (stars >= 1 AND stars <= 5), -- Stars are on the scale 1-5
-    CHECK(TeacherID <> LearnerID) -- check if learner and teacher is the same person, since teacher cannot review himself
+    CHECK(TeacherID <> LearnerID) -- Check if learner and teacher is the same person, since teacher cannot review himself
 ); 
 
 CREATE TABLE Milestone(
+    CourseID REFERENCES Course(ID),
     ID INT,
     credits INT,
-    CourseID REFERENCES Course(ID),
     PRIMARY KEY(ID) 
 );
 
@@ -85,7 +86,7 @@ CREATE TABLE Exam(
     date DATE NOT NULL
 );
 
--- weak entity
+-- Weak entity
 CREATE TABLE Question(
 	ID INT REFERENCES Exams,
     number VARCHAR 
@@ -97,8 +98,8 @@ CREATE TABLE Question(
 
 -- Union
 CREATE TABLE Squad(
+    SponseeID REFERENCES Sponsee(ID),
     ID INT,
-    sponseeID REFERENCES Sponsee(ID),
     -- refrence language?
     -- Learner
     name VARCHAR NOT NULL,
