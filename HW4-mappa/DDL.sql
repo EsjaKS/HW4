@@ -4,15 +4,16 @@ CREATE TABLE Languages(
 	ID INT,
 	name VARCHAR NOT NULL,
 	speakers VARCHAR NOT NULL,
-    PRIMARY KEY (ID)
+    PRIMARY KEY(ID)
 );
 
 CREATE TABLE Courses(
 	ID INT,
 	name VARCHAR NOT NULL,
-	start_date DATE NOT NULL, -- á að vera not null hér?
+	start_date DATE NOT NULL,
 	level VARCHAR NOT NULL, 
     LanguagesID REFERENCES Languages(ID),
+    -- TeacherID REFERENCES Teacher(ID),
 	PRIMARY KEY (ID)
 );
 
@@ -28,7 +29,7 @@ CREATE TABLE Subscriber(
 CREATE TABLE Teacher(
     SubscriberID REFERENCES Subscriber(ID),
     phone VARCHAR NOT NULL,
-    office_hours VARCHAR,
+    office_hours VARCHAR, -- Can be NULL because some teachers have maybe not worked any hours yet
     bank VARCHAR NOT NULL,
     ledger VARCHAR NOT NULL,
     account_number VARCHAR NOT NULL,
@@ -46,7 +47,7 @@ CREATE TABLE Completes(
     LearnerID INT REFERENCES Learner(ID),
     MilestoneID INT REFERENCES Milestone(ID),
     grade VARCHAR NOT NULL,
-    Foreign Key(CourseID, LearnerID) INT REFERENCES Registered_to(CourseID, LearnerID),  
+    FOREIGN KEY(CourseID, LearnerID) INT REFERENCES Registered_to(CourseID, LearnerID),  
     PRIMARY KEY(CourseID, LearnerID, MilestoneID)
 );
 
