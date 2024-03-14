@@ -12,7 +12,7 @@ CREATE TABLE Courses(
 	name VARCHAR NOT NULL,
 	start_date DATE NOT NULL, -- á að vera not null hér?
 	level VARCHAR NOT NULL, 
-    Languagesid REFERENCES Languages(ID),
+    LanguagesID REFERENCES Languages(ID),
 	PRIMARY KEY (ID)
 );
 
@@ -97,7 +97,7 @@ CREATE TABLE Question(
 -- Union
 CREATE TABLE Squad(
     ID INT,
-    sponseeid REFERENCES Sponsee(ID),
+    sponseeID REFERENCES Sponsee(ID),
     -- refrence language?
     -- Learner
     name VARCHAR NOT NULL,
