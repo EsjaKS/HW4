@@ -10,9 +10,9 @@ CREATE TABLE Languages(
 CREATE TABLE Courses(
 	ID INT,
 	name VARCHAR NOT NULL,
-	start_date DATE NOT NULL,
+	start_date DATE NOT NULL, -- á að vera not null hér?
 	level VARCHAR NOT NULL, 
-    Languagesid REFERENCES Languages (ID)
+    Languagesid REFERENCES Languages(ID),
 	PRIMARY KEY (ID)
 );
 
@@ -26,15 +26,14 @@ CREATE TABLE Subscriber(
 );
 
 CREATE TABLE Teacher(
-    subscriberid REFERENCES Subscriber (ID)
-    phone VARCHAR NOT NULL
-    office_hours VARCHAR
-    bank VARCHAR NOT NULL
-    ledger VARCHAR NOT NULL
-    account_number VARCHAR NOT NULL
+    SubscriberID REFERENCES Subscriber(ID),
+    phone VARCHAR NOT NULL,
+    office_hours VARCHAR,
+    bank VARCHAR NOT NULL,
+    ledger VARCHAR NOT NULL,
+    account_number VARCHAR NOT NULL,
     UNIQUE(phone)  
 );
-
 
 CREATE TABLE Registered_to(
     CourseID INT REFERENCES Course(ID), 
@@ -43,19 +42,16 @@ CREATE TABLE Registered_to(
 ); 
 
 CREATE TABLE Completes(
-    CourseID INT REFERENCES Course (ID)
-    LearnerID INT REFERENCES Learner (ID)
-    MilestoneID INT REFERENCES Milestone (ID)
-    grade VARCHAR NOT NULL
-    Foreign Key(courseid, learnerid) INT REFERENCES Registered_to(CourseID, learnerID),  
-    PRIMARY KEY(CourseID, LearnerID, milestoneID)
+    CourseID INT REFERENCES Course(ID),
+    LearnerID INT REFERENCES Learner(ID),
+    MilestoneID INT REFERENCES Milestone(ID),
+    grade VARCHAR NOT NULL,
+    Foreign Key(CourseID, LearnerID) INT REFERENCES Registered_to(CourseID, LearnerID),  
+    PRIMARY KEY(CourseID, LearnerID, MilestoneID)
 );
 
-
-
-
 CREATE TABLE Learner(
-    sponseeid references sponsee(id)
+    SponseeID REFERENCES sponsee(ID),
     last_login_date DATE NOT NULL,
     XP INT
 );
@@ -66,25 +62,25 @@ CREATE TABLE Learner(
 CREATE TABLE Reviews(
     TeacherID INT REFERENCES Teacher(ID),
     LearnerID INT REFERENCES Learner(ID),
-    stars INT CHECK (stars >= 1 AND stars <= 5), -- Stjörnur meiga bara vera á þessu bili.
-    CHECK(TeacherID<>LearnerID) -- tjékka hvort learner id sé sama og teacher id.
+    stars INT CHECK (stars >= 1 AND stars <= 5), -- Stars are on the scale 1-5
+    CHECK(TeacherID <> LearnerID) -- check if learner and teacher is the same person, since teacher cannot review himself
 ); 
 
 CREATE TABLE Milestone(
     ID INT,
     credits INT,
-    courseid REFERENCES course (ID)
+    CourseID REFERENCES Course(ID),
     PRIMARY KEY(ID) 
 );
 
 CREATE TABLE Assignment(
-    milestoneid REFERENCES milestone(id)
+    MilestoneID REFERENCES Milestone(ID),
     due_date DATE NOT NULL
 );
 
 CREATE TABLE Exam(
-    milestoneid REFERENCES milestone(id)
-    duration VARCHAR
+    MilestoneID REFERENCES Milestone(ID),
+    duration VARCHAR,
     date DATE NOT NULL
 );
 
@@ -95,28 +91,27 @@ CREATE TABLE Question(
     weight VARCHAR
     text VARCHAR NOT NULL,
     PRIMARY KEY (number)
-    FOREIGN KEY (examID) REFERENCES Exam (ID)
+    FOREIGN KEY (ExamID) REFERENCES Exam(ID)
 );
 
--- union
+-- Union
 CREATE TABLE Squad(
     ID INT,
-    sponseeid REFERENCES sponsee (ID)
+    sponseeid REFERENCES Sponsee(ID),
     -- refrence language?
     -- Learner
     name VARCHAR NOT NULL,
     address VARCHAR NOT NULL, 
-    PRIMARY KEY (ID) 
+    PRIMARY KEY(ID) 
 );
 
--- union
+-- Union
 CREATE TABLE Sponsee(
     ID INT, 
     grant_amount INT, -- Decimal
     PRIMARY KEY (ID)
 );
 
--- tígull á tígull að vera
 CREATE TABLE Nominates(
     NominatesID INT NOT NULL REFERENCES Teacher(ID),
     SponseeID INT REFERENCES Party(ID),
