@@ -77,11 +77,13 @@ CREATE TABLE Milestone(
 
 CREATE TABLE Assignment(
     MilestoneID INT REFERENCES Milestone(ID),
+    -- PRIMARY KEY(MilestoneID),
     due_date DATE NOT NULL
 );
 
 CREATE TABLE Exam(
     MilestoneID INT REFERENCES Milestone(ID),
+    -- PRIMARY KEY(MilestoneID),
     duration VARCHAR,
     date DATE NOT NULL
 );
