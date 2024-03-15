@@ -120,7 +120,7 @@ CREATE TABLE Squad(
     ID INT,
     LanguageID INT REFERENCES Language(ID), -- ath betur
     name VARCHAR NOT NULL,
-    address VARCHAR NOT NULL, 
+    address VARCHAR NOT NULL, -- kannski meira rétt að gera address VARCHAR því það má vera null (stendur optional í verkefnalýsingunni)
     PRIMARY KEY(ID) 
 );
 
