@@ -17,7 +17,6 @@
 -- DROP TABLE IF EXISTS Nominates;
 
 
-
 CREATE TABLE Languages(
 	ID INT,
 	name VARCHAR NOT NULL,
@@ -51,7 +50,7 @@ CREATE TABLE Teacher(
     bank VARCHAR NOT NULL,
     ledger VARCHAR NOT NULL,
     account_number VARCHAR NOT NULL,
-    -- PRIMARY KEY(SubscriberID)
+    PRIMARY KEY(SubscriberID), --ath betur
     UNIQUE(phone)  
 );
 
@@ -73,8 +72,8 @@ CREATE TABLE Completes(
 CREATE TABLE Learner(
     SubscriberID INT REFERENCES Subscriber(ID),
     SponseeID INT REFERENCES sponsee(ID),
-    -- SquadID INT REFERENCES Squad(ID), one to many
-    -- PRIMARY KEY(SubscriberID)
+    SquadID INT REFERENCES Squad(ID), -- one to many, ath betur
+    PRIMARY KEY(SubscriberID), -- ath betur 
     last_login_date DATE NOT NULL,
     XP INT
 );
@@ -95,15 +94,15 @@ CREATE TABLE Milestone(
 
 CREATE TABLE Assignment(
     MilestoneID INT REFERENCES Milestone(ID),
-    -- PRIMARY KEY(MilestoneID),
-    due_date DATE NOT NULL
+    due_date DATE NOT NULL,
+    PRIMARY KEY(MilestoneID) --ath betur
 );
 
 CREATE TABLE Exam(
     MilestoneID INT REFERENCES Milestone(ID),
-    -- PRIMARY KEY(MilestoneID),
     duration VARCHAR,
-    date DATE NOT NULL
+    date DATE NOT NULL,
+    PRIMARY KEY(MilestoneID) -- ath betur
 );
 
 -- Weak entity
