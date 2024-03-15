@@ -1,20 +1,20 @@
 -- Elísabet Erlendsdóttir og Esja Kristín Siggeirsdóttir
 
--- DROP TABLE IF EXISTS Languages;
--- DROP TABLE IF EXISTS Courses;
--- DROP TABLE IF EXISTS Subscriber;
--- DROP TABLE IF EXISTS Teacher;
--- DROP TABLE IF EXISTS Registered_to;
--- DROP TABLE IF EXISTS Completes;
--- DROP TABLE IF EXISTS Learner;
--- DROP TABLE IF EXISTS Reviews;
--- DROP TABLE IF EXISTS Milestone;
--- DROP TABLE IF EXISTS Assignment;
--- DROP TABLE IF EXISTS Exam;
--- DROP TABLE IF EXISTS Question;
--- DROP TABLE IF EXISTS Squad;
--- DROP TABLE IF EXISTS Sponsee;
--- DROP TABLE IF EXISTS Nominates;
+DROP TABLE IF EXISTS Languages;
+DROP TABLE IF EXISTS Courses;
+DROP TABLE IF EXISTS Subscriber;
+DROP TABLE IF EXISTS Teacher;
+DROP TABLE IF EXISTS Registered_to;
+DROP TABLE IF EXISTS Completes;
+DROP TABLE IF EXISTS Learner;
+DROP TABLE IF EXISTS Reviews;
+DROP TABLE IF EXISTS Milestone;
+DROP TABLE IF EXISTS Assignment;
+DROP TABLE IF EXISTS Exam;
+DROP TABLE IF EXISTS Question;
+DROP TABLE IF EXISTS Squad;
+DROP TABLE IF EXISTS Sponsee;
+DROP TABLE IF EXISTS Nominates;
 
 
 CREATE TABLE Languages(
@@ -118,7 +118,7 @@ CREATE TABLE Question(
 CREATE TABLE Squad(
     SponseeID INT REFERENCES Sponsee(ID),
     ID INT,
-    -- LanguageID INT REFERENCES Language(ID),
+    LanguageID INT REFERENCES Language(ID), -- ath betur
     name VARCHAR NOT NULL,
     address VARCHAR NOT NULL, 
     PRIMARY KEY(ID) 
