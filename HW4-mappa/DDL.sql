@@ -55,18 +55,18 @@ CREATE TABLE Teacher(
 );
 
 CREATE TABLE Registered_to(
-    CourseID INT REFERENCES Course(ID), 
+    CoursesID INT REFERENCES Courses(ID), 
     LearnerID INT REFERENCES Learner(ID), 
-    PRIMARY KEY(CourseID, LearnerID) 
+    PRIMARY KEY(CoursesID, LearnerID) 
 ); 
 
 CREATE TABLE Completes(
-    CourseID INT REFERENCES Course(ID),
+    CoursesID INT REFERENCES Courses(ID),
     LearnerID INT REFERENCES Learner(ID),
     MilestoneID INT REFERENCES Milestone(ID),
     grade VARCHAR NOT NULL,
-    FOREIGN KEY(CourseID, LearnerID) INT REFERENCES Registered_to(CourseID, LearnerID),  
-    PRIMARY KEY(CourseID, LearnerID, MilestoneID)
+    FOREIGN KEY(CoursesID, LearnerID) INT REFERENCES Registered_to(CoursesID, LearnerID),  
+    PRIMARY KEY(CoursesID, LearnerID, MilestoneID)
 );
 
 CREATE TABLE Learner(
@@ -86,7 +86,7 @@ CREATE TABLE Reviews(
 ); 
 
 CREATE TABLE Milestone(
-    CourseID INT REFERENCES Course(ID),
+    CoursesID INT REFERENCES Courses(ID),
     ID INT,
     credits INT,
     PRIMARY KEY(ID) 
