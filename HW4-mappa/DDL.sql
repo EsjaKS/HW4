@@ -1,20 +1,20 @@
 -- Elísabet Erlendsdóttir og Esja Kristín Siggeirsdóttir
 
-DROP TABLE IF EXISTS Languages;
-DROP TABLE IF EXISTS Sponsee;
-DROP TABLE IF EXISTS Subscriber;
-DROP TABLE IF EXISTS Squad;
-DROP TABLE IF EXISTS Teacher;
-DROP TABLE IF EXISTS Learner;
-DROP TABLE IF EXISTS Reviews;
-DROP TABLE IF EXISTS Nominates;
-DROP TABLE IF EXISTS Courses;
-DROP TABLE IF EXISTS Registered_to;
-DROP TABLE IF EXISTS Milestone;
-DROP TABLE IF EXISTS Completes;
-DROP TABLE IF EXISTS Assignment;
-DROP TABLE IF EXISTS Exam;
 DROP TABLE IF EXISTS Question;
+DROP TABLE IF EXISTS Exam;
+DROP TABLE IF EXISTS Assignment;
+DROP TABLE IF EXISTS Completes;
+DROP TABLE IF EXISTS Milestone;
+DROP TABLE IF EXISTS Registered_to;
+DROP TABLE IF EXISTS Courses;
+DROP TABLE IF EXISTS Nominates;
+DROP TABLE IF EXISTS Reviews;
+DROP TABLE IF EXISTS Learner;
+DROP TABLE IF EXISTS Teacher;
+DROP TABLE IF EXISTS Squad;
+DROP TABLE IF EXISTS Subscriber;
+DROP TABLE IF EXISTS Sponsee;
+DROP TABLE IF EXISTS Languages;
 
 
 CREATE TABLE Languages(
@@ -27,7 +27,7 @@ CREATE TABLE Languages(
 CREATE TABLE Sponsee(
     ID INT, 
     grant_amount INT,
-    PRIMARY KEY (ID)
+    PRIMARY KEY(ID)
 );
 
 CREATE TABLE Subscriber(
@@ -41,13 +41,12 @@ CREATE TABLE Subscriber(
 
 CREATE TABLE Squad(
     SponseeID INT REFERENCES Sponsee(ID),
-    LanguageID INT REFERENCES Language(ID), -- ath betur
+    LanguagesID INT REFERENCES Languages(ID), -- ath betur
     ID INT,
     name VARCHAR NOT NULL,
     address VARCHAR NOT NULL, -- kannski meira rétt að gera address VARCHAR því það má vera null (stendur optional í verkefnalýsingunni)
     PRIMARY KEY(ID) 
 );
-
 
 CREATE TABLE Teacher(
     SubscriberID INT REFERENCES Subscriber(ID),
@@ -111,7 +110,7 @@ CREATE TABLE Completes(
     LearnerID INT REFERENCES Learner(ID),
     MilestoneID INT REFERENCES Milestone(ID),
     grade VARCHAR NOT NULL,
-    FOREIGN KEY(CoursesID, LearnerID) INT REFERENCES Registered_to(CoursesID, LearnerID),  
+    FOREIGN KEY(CoursesID, LearnerID) REFERENCES Registered_to(CoursesID, LearnerID),  
     PRIMARY KEY(CoursesID, LearnerID, MilestoneID)
 );
 
@@ -130,10 +129,9 @@ CREATE TABLE Exam(
 
 -- Weak entity
 CREATE TABLE Question(
-	ID INT REFERENCES Exams, --id
+	ExamsID INT REFERENCES Exams(ID),
     number VARCHAR,
     weight VARCHAR,
     text VARCHAR NOT NULL,
-    PRIMARY KEY(number),
-    FOREIGN KEY(ExamID) REFERENCES Exam(ID) -- taka ut
+    PRIMARY KEY(number)
 );
