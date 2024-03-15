@@ -1,7 +1,7 @@
 -- Elísabet Erlendsdóttir og Esja Kristín Siggeirsdóttir
 
 DROP TABLE IF EXISTS Question;
-DROP TABLE IF EXISTS Exam;
+DROP TABLE IF EXISTS Exams;
 DROP TABLE IF EXISTS Assignment;
 DROP TABLE IF EXISTS Completes;
 DROP TABLE IF EXISTS Milestone;
@@ -61,7 +61,7 @@ CREATE TABLE Teacher(
 
 CREATE TABLE Learner(
     SubscriberID INT REFERENCES Subscriber(ID),
-    SponseeID INT REFERENCES sponsee(ID),
+    SponseeID INT REFERENCES Sponsee(ID),
     SquadID INT REFERENCES Squad(ID), -- one to many, ath betur
     PRIMARY KEY(SubscriberID), 
     last_login_date DATE NOT NULL,
@@ -69,14 +69,14 @@ CREATE TABLE Learner(
 );
 
 CREATE TABLE Reviews(
-    TeacherID INT REFERENCES Teacher(ID),
-    LearnerID INT REFERENCES Learner(ID),
+    TeacherID INT REFERENCES Teacher(SubscriberID),
+    LearnerID INT REFERENCES Learner(SubscriberID),
     stars INT CHECK (stars >= 1 AND stars <= 5), -- Stars are on the scale 1-5
     CHECK(TeacherID <> LearnerID) -- Check if learner and teacher is the same person, since teacher cannot review himself
 ); 
 
 CREATE TABLE Nominates(
-    NominatesID INT NOT NULL REFERENCES Teacher(ID),
+    NominatesID INT NOT NULL REFERENCES Teacher(SubscriberID),
     SponseeID INT REFERENCES Sponsee(ID),
     year INT,
     PRIMARY KEY (SponseeID, year)
@@ -84,7 +84,7 @@ CREATE TABLE Nominates(
 
 CREATE TABLE Courses(
 	LanguagesID INT REFERENCES Languages(ID),
-    TeacherID INT REFERENCES Teacher(ID),
+    TeacherID INT REFERENCES Teacher(SubscriberID),
     ID INT,
 	name VARCHAR NOT NULL,
 	start_date DATE NOT NULL,
@@ -94,7 +94,7 @@ CREATE TABLE Courses(
 
 CREATE TABLE Registered_to(
     CoursesID INT REFERENCES Courses(ID), 
-    LearnerID INT REFERENCES Learner(ID), 
+    LearnerID INT REFERENCES Learner(SubscriberID), 
     PRIMARY KEY(CoursesID, LearnerID) 
 ); 
 
@@ -107,7 +107,7 @@ CREATE TABLE Milestone(
 
 CREATE TABLE Completes(
     CoursesID INT REFERENCES Courses(ID),
-    LearnerID INT REFERENCES Learner(ID),
+    LearnerID INT REFERENCES Learner(SubscriberID),
     MilestoneID INT REFERENCES Milestone(ID),
     grade VARCHAR NOT NULL,
     FOREIGN KEY(CoursesID, LearnerID) REFERENCES Registered_to(CoursesID, LearnerID),  
@@ -120,7 +120,7 @@ CREATE TABLE Assignment(
     PRIMARY KEY(MilestoneID) --ath betur
 );
 
-CREATE TABLE Exam(
+CREATE TABLE Exams(
     MilestoneID INT REFERENCES Milestone(ID),
     duration VARCHAR,
     date DATE NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE Exam(
 
 -- Weak entity
 CREATE TABLE Question(
-	ExamsID INT REFERENCES Exams(ID),
+	ExamsID INT REFERENCES Exams(MilestoneID),
     number VARCHAR,
     weight VARCHAR,
     text VARCHAR NOT NULL,
